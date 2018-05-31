@@ -1,0 +1,30 @@
+version: '3.3'
+services:
+  app:
+    build: .
+    container_name: botcamp_app
+    volumes:
+      - .:/usr/src/app
+    command: 'python main.py'
+    depends_on:
+      - db
+    networks:
+      - bootcamp_net
+  db:
+    image: mysql:5.7
+    container_name: botcamp_db
+    volumes:
+      - ./data:/var/lib/mysql:rw
+    ports:
+      - "3306"
+    environment:
+      TZ: "America/Sao_Paulo"
+      MYSQL_ROOT_PASSWORD: "secret"
+      MYSQL_DATABASE: "botcamp"
+      MYSQL_USER: "botcamp"
+      MYSQL_PASSWORD: "secret"
+    networks:
+      - bootcamp_net
+networks:
+  bootcamp_net:
+    driver: bridge
